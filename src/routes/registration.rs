@@ -26,12 +26,12 @@ pub async fn register_user(
     let user: User = User::from_details(form.email.clone(), hashed_password);
 
     sqlx::query!(
-        "INSERT INTO users(userid,email,pw_hash) VALUES (?1, ?2, ?3)",
-        Uuid::new_v4(),
+        "INSERT INTO users(userid,email,pw_hash) VALUES ($1, $2, $3)",
+        uuid::Uuid::new_v4(),
         form.email,
-        hashed_password
+        user.pw_hash
     )
-    .execute(&pool)
+    .execute(pool.get_ref())
     .await?;
 
     id.remember(user.uid.to_owned().to_string());
