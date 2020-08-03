@@ -1,6 +1,5 @@
-use fll_scoring::{errors::ServiceError, config::get_service_config_value};
-use argonautica::{Hasher, Verifier, input::Salt};
-
+use argonautica::{input::Salt, Hasher, Verifier};
+use fll_scoring::{config::get_service_config_value, errors::ServiceError};
 
 /// Takes in a password and returns a Hash
 pub fn hash_password(password: &str) -> Result<String, ServiceError> {
@@ -12,9 +11,7 @@ pub fn hash_password(password: &str) -> Result<String, ServiceError> {
 
     match result {
         Ok(hash) => Ok(hash),
-        Err(_err) => {
-            Err(ServiceError::InternalServerError)
-        }
+        Err(_err) => Err(ServiceError::InternalServerError),
     }
 }
 
@@ -26,17 +23,15 @@ pub fn verify(hash: &str, password: &str) -> Result<bool, ServiceError> {
         .with_password(password)
         .with_secret_key(secret_key.as_str())
         .verify();
-    
+
     match result {
         Ok(b) => Ok(b),
-        Err(_) => {
-            Err(ServiceError::InternalServerError)
-        }
+        Err(_) => Err(ServiceError::InternalServerError),
     }
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
     #[test]

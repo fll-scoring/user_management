@@ -1,7 +1,6 @@
-use serde::{Deserialize, Serialize};
-use bson::{Document, doc};
+use chrono::{DateTime, Utc};
 use fll_scoring::errors::ServiceError;
-use chrono::{DateTime,Utc};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Clone)]

@@ -1,10 +1,14 @@
-use actix_web::{error::BlockingError, web, HttpResponse, post, get};
+use crate::{
+    models::{Invitation, SlimUser, User},
+    utils::hash_password,
+};
+use actix_web::{error::BlockingError, get, post, web, HttpResponse};
+use fll_scoring::errors::ServiceError;
 use serde::Deserialize;
-use crate::{utils::hash_password, models::{Invitation, SlimUser, User}};
-use fll_scoring::{errors::ServiceError, data::get_mongo_database};
-use bson::doc;
+
 use actix_identity::Identity;
 use handlebars::Handlebars;
+use sqlx::postgres::PgPool;
 
 #[derive(Deserialize)]
 pub struct RegisteredUser {
