@@ -54,36 +54,4 @@ impl From<User> for SlimUser {
     }
 }
 
-impl From<Document> for User {
-    fn from(doc: Document) -> Self  {
-        let email = match doc.get_str("email") {
-            Ok(eml) => eml.to_string(),
-            Err(_) => "".to_string(),
-        };
-        let uid = match doc.get_str("uid") {
-            Ok(id) => Uuid::parse_str(id).unwrap(),
-            Err(_) => Uuid::new_v4(),
-        };
-        let pw_hash = match doc.get_str("pw_hash") {
-            Ok(hash) => hash.to_string(),
-            Err(_) => "".to_string(),
-        };
-        let created_at = match doc.get_datetime("created_at") {
-            Ok(datetime) => datetime.clone(),
-            Err(_) => chrono::Utc::now(),
-        };
 
-        User {
-            uid,
-            email,
-            pw_hash,
-            created_at: created_at.clone(),
-        }
-    }
-}
-
-impl From<User> for Document {
-    fn from(user: User) -> Self {
-        doc! {"uid": user.uid.to_string(), "email": user.email, "pw_hash": user.pw_hash, "created_at": user.created_at}        
-    }
-}
