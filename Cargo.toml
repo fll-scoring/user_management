@@ -17,6 +17,8 @@ chrono = { version = "0.4", features = ["serde"] }
 lazy_static = "1.4"
 sparkpost = "0.5"
 uuid = { version = "0.8", features = ["serde", "v4", "v5"] }
-bson = "1.0"
+
 actix-rt = "1.0"
 handlebars = { version = "3.0", features = ["dir_source"] }
+
+sqlx = "0.3"
