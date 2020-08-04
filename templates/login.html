@@ -1,0 +1,10 @@
+{% extends base.html %}
+{% let title = "Login" %}
+
+{% block content %}
+<form action="/api/users/login" method="POST">
+  <input type="text" id="email" name="email">
+  <input type="password" id="password" name="password">
+  <input type="submit">
+</form>
+{% endblock %}

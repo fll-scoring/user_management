@@ -10,7 +10,7 @@ pub mod models;
 pub mod routes;
 pub mod utils;
 
-use routes::registration::*;
+use routes::{registration::*, login::*};
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -40,6 +40,8 @@ async fn main() -> std::io::Result<()> {
             .app_data(pool_ref.clone())
             .service(register_user)
             .service(register_template)
+            .service(login_user)
+            .service(login_page)
             .wrap(IdentityService::new(
                 CookieIdentityPolicy::new(&cookie_secret_key.as_bytes())
                     .name("fll-scoring-auth")

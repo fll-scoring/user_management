@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Test</title>
-    </head>
+{% extends "base.html" %}
+{% let title = "Register" %}
 
-    <body>
-        <form action="/api/users/register" method="POST">
+{% block content %}
+       <form action="/api/users/register" method="POST">
             <input type="text" id="email" name="email">
             <input type="text" id="password" name="password">
             <input type="submit">
         </form>
-    </body>
-</html
+{% endblock %}

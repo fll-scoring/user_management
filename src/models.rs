@@ -52,5 +52,3 @@ impl From<User> for SlimUser {
         SlimUser { email: user.email }
     }
 }
-
-
