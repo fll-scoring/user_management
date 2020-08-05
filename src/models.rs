@@ -5,19 +5,17 @@ use uuid::Uuid;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct User {
-    pub uid: Uuid,
+    pub userid: Uuid,
     pub email: String,
     pub pw_hash: String,
-    pub created_at: chrono::DateTime<Utc>,
 }
 
 impl User {
     pub fn from_details<S: Into<String>, T: Into<String>>(email: S, pwd: T) -> Self {
         User {
-            uid: Uuid::new_v4(),
+            userid: Uuid::new_v4(),
             email: email.into(),
             pw_hash: pwd.into(),
-            created_at: chrono::Utc::now(),
         }
     }
 }
