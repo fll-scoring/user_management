@@ -1,5 +1,10 @@
 {% extends base.html %}
-{% let title = "Login" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+<style>
+</style>
+{% endblock %}
 
 {% block content %}
 <form action="/api/users/login" method="POST">

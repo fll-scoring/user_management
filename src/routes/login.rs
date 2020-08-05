@@ -14,13 +14,22 @@ struct UserLogin {
 
 #[derive(Template)]
 #[template(path = "login.html")]
-struct LoginTemplate {}
+struct LoginTemplate<'a> {
+  title: &'a str,
+}
 
 #[post("/api/users/login")]
 pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Data<PgPool>) -> Result<HttpResponse, ServiceError> {
-  let result = sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", form.email).fetch_one(pool.get_ref()).await?; 
+  let result = match sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", form.email).fetch_one(pool.get_ref()).await {
+    Ok(res) => res,
+    Err(_) => {
+      return Err(ServiceError::InternalServerError);
+    }
+  };
 
-  let is_pass_correct = verify(form.password, result.pw_hash)?;
+  
+
+  let is_pass_correct = verify(&form.password, &result.pw_hash)?;
 
   if is_pass_correct {
   Ok(HttpResponse::Ok().body("success"))
@@ -31,5 +40,5 @@ pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Dat
 
 #[get("/login")]
 pub async fn login_page() -> Result<HttpResponse, ServiceError> {
-  LoginTemplate.into_response()
+  LoginTemplate { title: "Login".as_ref() }.into_response()
 }
