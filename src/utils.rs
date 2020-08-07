@@ -11,7 +11,7 @@ pub fn hash_password(password: &str) -> Result<String, ServiceError> {
 
     match result {
         Ok(hash) => Ok(hash),
-        Err(_err) => Err(ServiceError::InternalServerError),
+        Err(err) => Err(ServiceError::InternalServerError(format!("Password hash error {:?}", err.to_string()))),
     }
 }
 
@@ -26,7 +26,7 @@ pub fn verify(hash: &str, password: &str) -> Result<bool, ServiceError> {
 
     match result {
         Ok(b) => Ok(b),
-        Err(_) => Err(ServiceError::InternalServerError),
+        Err(e) => Err(ServiceError::InternalServerError(format!("Password verify error {:?}", e.to_string()))),
     }
 }
 

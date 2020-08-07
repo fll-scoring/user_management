@@ -17,7 +17,7 @@ pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Dat
   let result = match sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", form.email).fetch_one(pool.get_ref()).await {
     Ok(res) => res,
     Err(_) => {
-      return Err(ServiceError::InternalServerError);
+      return Err(ServiceError::InternalServerError("Unable to query user database".to_string()));
     }
   };
 
@@ -36,7 +36,7 @@ pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Dat
 
 #[get("/login")]
 pub async fn login_page(tera: web::Data<tera::Tera>) -> Result<actix_web::HttpResponse, ServiceError> {
-  let body = tera.render("login.html", &tera::Context::new()).map_err(|_| ServiceError::InternalServerError)?;
+  let body = tera.render("login.html", &tera::Context::new()).map_err(|e| ServiceError::InternalServerError(format!("Template error {:?}", e.to_string())))?;
 
   Ok(HttpResponse::Ok().content_type("text/html").body(body))
 }
