@@ -6,6 +6,8 @@ use serde::Deserialize;
 
 use fll_scoring::errors::ServiceError;
 
+use log::warn;
+
 #[derive(Deserialize)]
 pub struct UserLogin {
   pub email: String,
@@ -16,7 +18,8 @@ pub struct UserLogin {
 pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Data<PgPool>) -> Result<HttpResponse, ServiceError> {
   let result = match sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", form.email).fetch_one(pool.get_ref()).await {
     Ok(res) => res,
-    Err(_) => {
+    Err(e) => {
+      warn!("Unable to query user database: {:?}",e);
       return Err(ServiceError::InternalServerError("Unable to query user database".to_string()));
     }
   };
