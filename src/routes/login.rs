@@ -24,6 +24,8 @@ pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Dat
   
 
   let is_pass_correct = verify(&form.password, &result.pw_hash)?;
+  
+  id.remember(result.userid.to_owned().to_string());
 
   if is_pass_correct {
   Ok(HttpResponse::Ok().body("success"))
