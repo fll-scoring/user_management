@@ -36,7 +36,7 @@ async fn main() -> std::io::Result<()> {
     };
 
     HttpServer::new(move || {
-        let tera = Tera::new("./templates/").unwrap();
+        let tera = Tera::new("./templates/**/*").unwrap();
         App::new()
             .app_data(hb_ref.clone())
             .app_data(pool_ref.clone())
