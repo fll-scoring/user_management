@@ -6,6 +6,7 @@ use actix_web::{web, App, HttpServer};
 use fll_scoring::config::{get_global_value, get_service_config_value};
 use handlebars::Handlebars;
 use tera::Tera;
+use log::info;
 
 pub mod models;
 pub mod routes;
@@ -13,8 +14,29 @@ pub mod utils;
 
 use routes::{registration::*, login::*};
 
+fn setup_logging() -> Result<(), log::SetLoggerError> {
+
+  fern::Dispatch::new()
+    .format(|out, msg, record| {
+      out.finish(format_args!(
+            "{}[{}][{}] {}",
+            chrono::Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
+            record.target(),
+            record.level(),
+            msg
+          ))
+    })
+    .level(log::LevelFilter::Debug)
+    .chain(std::io::stdout())
+    .apply()?;
+
+  Ok(())
+
+}
+
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
+    setup_logging().unwrap();
     let mut handlebars = Handlebars::new();
     handlebars
         .register_templates_directory(".html", "./templates")
