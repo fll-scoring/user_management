@@ -34,7 +34,7 @@ pub async fn register_user(
     .execute(pool.get_ref())
     .await?;
 
-    id.remember(user.uid.to_owned().to_string());
+    id.remember(user.userid.to_owned().to_string());
 
     Ok(HttpResponse::Ok().body("success"))
 }

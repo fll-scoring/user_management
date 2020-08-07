@@ -8,6 +8,8 @@ pub struct User {
     pub userid: Uuid,
     pub email: String,
     pub pw_hash: String,
+    pub admin: bool,
+    pub is_verified: bool,
 }
 
 impl User {
@@ -16,6 +18,8 @@ impl User {
             userid: Uuid::new_v4(),
             email: email.into(),
             pw_hash: pwd.into(),
+            admin: false,
+            is_verified: false
         }
     }
 }
