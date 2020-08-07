@@ -3,19 +3,13 @@ use crate::{models::{Invitation, SlimUser, User}, utils::verify};
 use actix_web::{get, post, web, HttpResponse};
 use actix_identity::Identity;
 use serde::Deserialize;
-use askama_actix::{Template, TemplateIntoResponse};
+
 use fll_scoring::errors::ServiceError;
 
 #[derive(Deserialize)]
-struct UserLogin {
+pub struct UserLogin {
   pub email: String,
   pub password: String,
-}
-
-#[derive(Template)]
-#[template(path = "login.html")]
-struct LoginTemplate<'a> {
-  title: &'a str,
 }
 
 #[post("/api/users/login")]
@@ -39,6 +33,8 @@ pub async fn login_user(form: web::Form<UserLogin>, id: Identity, pool: web::Dat
 }
 
 #[get("/login")]
-pub async fn login_page() -> Result<HttpResponse, ServiceError> {
-  LoginTemplate { title: "Login".as_ref() }.into_response()
+pub async fn login_page(tera: web::Data<tera::Tera>) -> Result<actix_web::HttpResponse, ServiceError> {
+  let body = tera.render("login.html", &tera::Context::new()).map_err(|_| ServiceError::InternalServerError)?;
+
+  Ok(HttpResponse::Ok().content_type("text/html").body(body))
 }

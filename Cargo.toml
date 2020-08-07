@@ -19,8 +19,7 @@ sparkpost = "0.5"
 uuid = { version = "0.8", features = ["serde", "v4", "v5"] }
 
 actix-rt = "1.0"
-askama = { version = "0.8", features = ["with-actix-web"] }
-askama_actix = "0.10"
+tera = "1.4"
 handlebars = {version = "3.3", features = ["dir_source"] }
 
 sqlx = { version = "0.3", features = ["postgres", "uuid"] }

@@ -5,6 +5,7 @@ use actix_identity::{CookieIdentityPolicy, Identity, IdentityService};
 use actix_web::{web, App, HttpServer};
 use fll_scoring::config::{get_global_value, get_service_config_value};
 use handlebars::Handlebars;
+use tera::Tera;
 
 pub mod models;
 pub mod routes;
@@ -35,9 +36,11 @@ async fn main() -> std::io::Result<()> {
     };
 
     HttpServer::new(move || {
+        let tera = Tera::new("./templates/").unwrap();
         App::new()
             .app_data(hb_ref.clone())
             .app_data(pool_ref.clone())
+            .data(tera)
             .service(register_user)
             .service(register_template)
             .service(login_user)
