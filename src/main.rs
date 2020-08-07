@@ -16,6 +16,13 @@ use routes::{registration::*, login::*};
 
 fn setup_logging() -> Result<(), log::SetLoggerError> {
 
+  let log_level = if get_global_value("environment", false).unwrap() == "development" {
+    log::LevelFilter::Debug
+  } else if get_global_value("environment", false).unwrap() == "production" {
+    log::LevelFilter::Info
+  } else {
+    log::LevelFilter::Info
+  };
   fern::Dispatch::new()
     .format(|out, msg, record| {
       out.finish(format_args!(
@@ -26,7 +33,7 @@ fn setup_logging() -> Result<(), log::SetLoggerError> {
             msg
           ))
     })
-    .level(log::LevelFilter::Debug)
+    .level(log_level)
     .chain(std::io::stdout())
     .apply()?;
 
