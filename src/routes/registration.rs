@@ -40,8 +40,8 @@ pub async fn register_user(
 }
 
 #[get("/register")]
-pub async fn register_template(hb: web::Data<Handlebars<'_>>) -> HttpResponse {
-    let body = hb.render("register", &json!({})).unwrap();
+pub async fn register_template(tera: web::Data<tera::Tera>) -> Result<HttpResponse, ServiceError> {
+    let body = tera.render("register.html", &tera::Context::new()).map_err(|e| ServiceError::InternalServerError(format!("Template error {:?}", e.to_string())))?;
 
-    HttpResponse::Ok().body(body)
+    Ok(HttpResponse::Ok().body(body))
 }
