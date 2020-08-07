@@ -1,10 +1,10 @@
 {% extends base.html %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Index{% endblock title %}
 {% block head %}
 <style>
 </style>
-{% endblock %}
+{% endblock head %}
 
 {% block content %}
 <form action="/api/users/login" method="POST">
@@ -12,4 +12,4 @@
   <input type="password" id="password" name="password">
   <input type="submit">
 </form>
-{% endblock %}
+{% endblock content %}
