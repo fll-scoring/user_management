@@ -3,7 +3,8 @@ extern crate serde_json;
 
 use actix_identity::{CookieIdentityPolicy, Identity, IdentityService};
 use actix_web::{web, App, HttpServer};
-use fll_scoring::config::{get_global_value, get_service_config_value};
+use actix_files as actix_fs;
+use fll_scoring::{utils::setup_base_template_context, config::{get_global_value, get_service_config_value}};
 use handlebars::Handlebars;
 use tera::Tera;
 use log::info;
@@ -64,16 +65,21 @@ async fn main() -> std::io::Result<()> {
         Err(_) => String::from("127.0.0.1:8001"),
     };
 
+    let base_context = setup_base_template_context("user_management".to_string());
+    let base_context_ref = web::Data::new(base_context);
+
     HttpServer::new(move || {
         let tera = Tera::new("templates/**/*").unwrap();
         App::new()
             .app_data(hb_ref.clone())
             .app_data(pool_ref.clone())
+            .app_data(base_context_ref.clone())
             .data(tera)
             .service(register_user)
             .service(register_template)
             .service(login_user)
             .service(login_page)
+            .service(actix_fs::Files::new("/static", "static/").show_files_listing())
             .wrap(IdentityService::new(
                 CookieIdentityPolicy::new(&cookie_secret_key.as_bytes())
                     .name("fll-scoring-auth")

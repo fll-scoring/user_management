@@ -10,6 +10,8 @@ use actix_identity::Identity;
 use handlebars::Handlebars;
 use sqlx::postgres::PgPool;
 
+use fll_scoring::prelude::*;
+
 #[derive(Deserialize)]
 pub struct RegisteredUser {
     pub email: String,
@@ -40,8 +42,8 @@ pub async fn register_user(
 }
 
 #[get("/register")]
-pub async fn register_template(tera: web::Data<tera::Tera>) -> Result<HttpResponse, ServiceError> {
-    let body = tera.render("register.html", &tera::Context::new()).map_err(|e| ServiceError::InternalServerError(format!("Template error {:?}", e.to_string())))?;
+pub async fn register_template(tera: web::Data<tera::Tera>, ctx: web::Data<tera::Context>) -> Result<HttpResponse, ServiceError> {
+    let body = tera.render("register.html", &ctx).map_err(|e| ServiceError::InternalServerError(format!("Template error {:?}", e.to_string())))?;
 
     Ok(HttpResponse::Ok().body(body))
 }
