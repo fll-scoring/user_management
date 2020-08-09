@@ -2,11 +2,19 @@
 <html>
   <head>
     <title>{% block title %}{{title}} | User Management{% endblock title %}</title>
+    <link rel="stylesheet" href="/static/main.css" type="text/css">
     {% block head %}{% endblock head %}
   </head>
 
   <body>
-    <div id="content">
+    <div id="navigation">
+      <ul id="nav-bar">
+        {% for service in services %}
+          <li><a href="{{service.base_url}}">{{service.name}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="centerDoc">
       {% block content %}
       {% endblock content %}
     </div>
