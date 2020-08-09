@@ -1,0 +1,86 @@
+/* Generic Selectors */
+ 
+body {
+   font-family: Georgia, "Times New Roman", Times, serif;
+   font-size: 14px;
+   color: #333333;
+   background-color: #F9F9F9;
+}
+ 
+p {
+   width: 80%;
+}
+
+h1 {
+   font-family: Georgia, "Times New Roman", Times, serif;
+   font-size: 18px;
+   font-weight: bold;
+   color: #000000;
+}
+ 
+h2 {
+   font-family: Georgia, "Times New Roman", Times, serif;
+   font-size: 16px;
+   font-weight: bold;
+   color: #000000;
+   border-bottom: 1px solid #C6EC8C;
+}
+ 
+/**************** Pseudo classes ****************/
+ 
+a:link {
+   color: #00CC00;
+   text-decoration: underline;
+   font-weight: bold;
+}
+ 
+li :link {
+   color: #00CC00;
+   text-decoration: none;
+   font-weight: bold;
+}
+ 
+a:visited {
+   color: #00CC00;
+   text-decoration: underline;
+   font-weight: bold;
+}
+ 
+ 
+a:active {
+   color: rgb(255, 0, 102);
+   font-weight: bold;
+}
+ 
+/************************* ID's *************************/
+ 
+#navigation {
+   position: absolute;
+   width: 100%;
+   height: 5%;
+   margin: 0;
+   border-bottom: 1px solid #C6EC8C;
+   font-weight: normal;
+}
+
+#navigation ul {
+
+  display: inline;
+
+}
+ 
+#nav-bar li {
+
+  display: inline;
+  font-weight: bold;
+  padding-right: 5px;
+  font-size: 1rem;
+}
+
+#centerDoc {
+   position: absolute;
+   padding: 0 0 20px 0; /*top right bottom left*/
+   margin-top: 50px;
+   margin-left: 235px;
+}
+
